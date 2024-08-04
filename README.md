@@ -2,7 +2,7 @@
 <div align="center">
     <img alt="" src=".ksinf/logo.png" height="130px">
     <h3>Five'sOrdrer</h3>
-    <em>Application web de gestion des commandes pour</em>
+    <em>Application web de gestion des commandes pour For'Games</em>
 </div>
 
 ## Description
