@@ -1,6 +1,6 @@
 # Five'sOrder
 <div align="center">
-    <img alt="" src=".ksinf/logo.png" height="130px">
+    <img alt="" src="./src/assets/logo.png" height="130px">
     <h3>Five'sOrdrer</h3>
     <em>Application web de gestion des commandes pour For'Games</em>
 </div>
@@ -96,6 +96,7 @@ Distribué sous la licence MPL-2.0. Voir `LICENSE` pour plus d'informations.
 Pour toute question, vous pouvez ouvrir une issue
 
 <p align="center">
-  <img align="center" src=".ksinf/fivestv.png" width="100" />
-  <img align="center" src=".ksinf/ksinf.png" width="100" /> 
+    Kerogs
+    |
+    Five'sTv
 </p>

@@ -1,5 +1,3 @@
-node_modules/
-vendor/
-public/package-lock.json
-composer.lock
-test/test.php
+node_modules/*
+vendor/*
+.env
