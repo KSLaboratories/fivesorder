@@ -1,0 +1,113 @@
+@import 'themes/ksis';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-background);
+    color: var(--gray-a12);
+}
+
+.ccenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    h1 {
+        text-align: center;
+    }
+
+    &__inside {
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+
+        .box {
+            flex: 1;
+            text-align: center;
+            height: 100%;
+
+            padding: 10px;
+            border: 10px;
+
+            background-color: var(--blue-5);
+            border: 1px solid var(--blue-10);
+
+            border-radius: 10px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            p.desc {
+                font-size: 12px;
+                font-weight: bold;
+                text-align: center;
+                color: var(--gray-a10);
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                input {
+                    padding: 10px;
+                    border-radius: 5px;
+                    border: 1px solid var(--blue-10);
+                }
+
+                button {
+                    padding: 10px;
+                    border-radius: 5px;
+                    border: 1px solid var(--blue-10);
+                    background-color: var(--blue-5);
+                    color: var(--gray-a12);
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: var(--blue-6);
+                    }
+                }
+            }
+
+            svg {
+                text-align: center;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1295px) {
+    .ccenter {
+        width: 90vw;
+    }
+
+}
+
+@media screen and (max-width: 900px) {
+    .ccenter {
+        display: block;
+        position: unset;
+        left: unset;
+        top: unset;
+        transform: unset;
+        margin: 60px auto;
+
+        &__inside {
+            flex-direction: column;
+        }
+    }
+
+}

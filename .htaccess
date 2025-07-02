@@ -1,0 +1,62 @@
+# ErrorDocument 403 /403.html
+# ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+RewriteRule ^login$ login.php
+RewriteRule ^super_admin$ sa.php
+RewriteRule ^restauration$ cuca.php
+
+<Files "LICENSE">  
+  Require all denied
+</Files>
+
+<Files ".htaccess">  
+  Require all denied
+</Files>
+
+<Files "README.md">  
+  Require all denied
+</Files>
+
+<Files ".gitignore">  
+  Require all denied
+</Files>
+
+<Files ".git">  
+  Require all denied
+</Files>
+
+<Files ".env">  
+  Require all denied
+</Files>
+
+<Files ".env.samp">  
+  Require all denied
+</Files>
+
+<Files "file/">  
+  Require all denied
+</Files>
+
+<Files "package.json">  
+  Require all denied
+</Files>
+
+<Files "package-lock.json">  
+  Require all denied
+</Files>
+
+<Files "composer.json">  
+  Require all denied
+</Files>
+
+<Files "composer.lock">  
+  Require all denied
+</Files>
+
+<Files "server.log">  
+  Require all denied
+</Files>
+
+Options -Indexes
