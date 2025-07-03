@@ -24,7 +24,7 @@ try {
     $stmt = $pdo->prepare("DELETE FROM filters WHERE id = :id");
     $stmt->execute([':id' => $filterId]);
 
-    header('Location: ../super_admin?success=filter_deleted');
+    header('Location: ../super_admin?filte=filter&for=filters_r');
     exit;
 
 } catch (PDOException $e) {

@@ -35,7 +35,7 @@ try {
     ]);
 
     // Redirection ou message de succès
-    header('Location: ../index.php?success=1');
+    header('Location: ../super_admin?filter=category&for=category_a');
     exit;
 
 } catch (PDOException $e) {

@@ -5,7 +5,7 @@ RewriteEngine On
 
 RewriteRule ^login$ login.php
 RewriteRule ^super_admin$ sa.php
-RewriteRule ^restauration$ cuca.php
+RewriteRule ^caisse$ ca.php
 
 <Files "LICENSE">  
   Require all denied

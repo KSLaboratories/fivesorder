@@ -23,7 +23,7 @@ try {
     $stmt = $pdo->prepare("INSERT INTO filters (label) VALUES (:label)");
     $stmt->execute([':label' => $label]);
 
-    header('Location: ../super_admin?success=filter_added');
+    header('Location: ../super_admin?&filter=filter&for=filters_a');
     exit;
 } catch (PDOException $e) {
     exit('Erreur : ' . $e->getMessage());

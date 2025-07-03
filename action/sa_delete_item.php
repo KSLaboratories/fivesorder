@@ -36,7 +36,7 @@ try {
     $stmt = $pdo->prepare("DELETE FROM items WHERE id = :id");
     $stmt->execute([':id' => $itemId]);
 
-    header('Location: ../super_admin?success=item_deleted');
+    header('Location: ../super_admin?filter=items&for=item_r');
     exit;
 } catch (PDOException $e) {
     exit('Erreur DB : ' . $e->getMessage());

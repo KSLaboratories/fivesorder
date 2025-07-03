@@ -34,6 +34,9 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FO | SA</title>
     <link rel="stylesheet" href="./src/css/style.css">
+
+    <link rel="stylesheet" href="./node_modules/notyf/notyf.min.css">
+    <script src="./node_modules/notyf/notyf.min.js"></script>
 </head>
 
 <body>
@@ -106,6 +109,7 @@ try {
         <?php } ?>
 
         <?php if ($_GET['filter'] == 'items' || $_GET['filter'] == '') { ?>
+            <!-- Modification dans le formulaire -->
             <form action="action/sa_add_item.php" method="post" enctype="multipart/form-data">
                 <h2>Ajouter un item</h2>
                 <p class="helpMessage">
@@ -147,8 +151,14 @@ try {
                 <!-- Additionnels -->
                 <div id="additionals">
                     <label>Ajouts disponibles :</label>
-                    <div>
-                        <input type="text" name="additionals[]" placeholder="Ex: sucre">
+                    <div class="additional-item">
+                        <input type="text" name="additionals[0][label]" placeholder="Nom (ex: sucre)">
+                        <input type="number" name="additionals[0][price]" placeholder="Prix (0.00-50.00)"
+                            min="0" max="50" step="0.01">
+                        <select name="additionals[0][default_quantity]">
+                            <option value="1">1 par défaut</option>
+                            <option value="0">0 par défaut</option>
+                        </select>
                         <button type="button" onclick="addAdditional()">+</button>
                     </div>
                 </div>
@@ -164,14 +174,24 @@ try {
             </form>
 
             <script>
+                let additionalCount = 1;
+
                 function addAdditional() {
                     const container = document.getElementById('additionals');
                     const div = document.createElement('div');
+                    div.className = 'additional-item';
                     div.innerHTML = `
-            <input type="text" name="additionals[]" placeholder="Ex: sucre">
+            <input type="text" name="additionals[${additionalCount}][label]" placeholder="Nom (ex: sucre)">
+            <input type="number" name="additionals[${additionalCount}][price]" placeholder="Prix (0.00-50.00)" 
+                   min="0" max="50" step="0.01">
+            <select name="additionals[${additionalCount}][default_quantity]">
+                <option value="1">1 par défaut</option>
+                <option value="0">0 par défaut</option>
+            </select>
             <button type="button" onclick="this.parentElement.remove()">-</button>
         `;
                     container.appendChild(div);
+                    additionalCount++;
                 }
             </script>
 
@@ -191,7 +211,7 @@ try {
             </form>
         <?php } ?>
 
-        <?php if ($_GET['filter'] == 'filter') { ?>
+        <?php if ($_GET['filter'] == 'filter' || $_GET['filter'] == '') { ?>
             <form action="action/sa_add_filter.php" method="post">
                 <h2>Ajouter un filtre</h2>
                 <input type="text" name="label" placeholder="Nom du filtre" required>
@@ -199,8 +219,8 @@ try {
             </form>
 
             <form action="action/sa_delete_filter.php" method="post" onsubmit="return confirm('Supprimer ce filtre ?')">
+                <h2>Supprimer un filtre</h2>
                 <select name="filter_id" required>
-                    <h2>Supprimer un filtre</h2>
                     <option value="">Choisir un filtre</option>
                     <?php foreach ($filters as $filter): ?>
                         <option value="<?= $filter['id'] ?>"><?= htmlspecialchars($filter['label']) ?></option>
@@ -209,6 +229,37 @@ try {
                 <button type="submit">Supprimer</button>
             </form>
 
+        <?php } ?>
+
+        <?php
+
+        $for = $_GET['for'] ?? '';
+
+        $notyfMsgArray = array(
+            "category_a" => "La catégorie a bien été ajoutée !",
+            "category_r" => "La catégorie a bien été supprimée !",
+            "item_a" => "L'item a bien été ajouté !",
+            "item_r" => "L'item a bien été supprimé !",
+            "filters_a" => "Le filtre a bien été ajouté !",
+            "filters_r" => "Le filtre a bien été supprimé !",
+            "ko" => "Opération effectuée !",
+            "ok" => "Une erreur est survenue !" // tu as inversé les messages entre ok et ko
+        );
+
+        if (!empty($for) && isset($notyfMsgArray[$for])) { ?>
+            <script>
+                const notyf = new Notyf();
+                notyf.open({
+                    type: 'success',
+                    message: <?= json_encode($notyfMsgArray[$for]) ?>,
+                    duration: 3000,
+                    position: {
+                        x: 'right',
+                        y: 'bottom'
+                    },
+                    dismissible: true
+                });
+            </script>
         <?php } ?>
 
     </main>

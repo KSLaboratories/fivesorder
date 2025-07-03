@@ -14,12 +14,12 @@ function securitySection($session_account_type)
             "redirect" => "/super_admin"
         ],
         'cu' => [
-            "page" => "cuca.php",
-            "redirect" => "/restauration"
+            "page" => "cu.php",
+            "redirect" => "/cuisine"
         ],
         "ca" => [
-            "page" => "cuca.php",
-            "redirect" => "/restauration"
+            "page" => "ca.php",
+            "redirect" => "/caisse"
         ]
     ];
 

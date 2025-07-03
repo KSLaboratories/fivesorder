@@ -18,7 +18,7 @@ try {
 
     $pdo->commit();
 
-    header('Location: ../super_admin?success=category_removed');
+    header('Location: ../super_admin?filter=category&for=category_r');
     exit;
 } catch (PDOException $e) {
     $pdo->rollBack();
