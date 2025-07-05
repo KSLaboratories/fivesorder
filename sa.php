@@ -73,9 +73,7 @@ try {
                     <option value="red">Rouge</option>
                     <option value="blue">Bleu</option>
                     <option value="green">Vert</option>
-                    <option value="yellow">Jaune</option>
                     <option value="orange">Orange</option>
-                    <option value="pink">Rose</option>
                     <option value="black">Noir</option>
                     <option value="purple">Violet</option>
                 </select>

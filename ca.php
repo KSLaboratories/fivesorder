@@ -21,8 +21,14 @@ try {
     }
 
     // ? items
-    if (empty($_GET['category'])) {
+    if (empty($_GET['category']) && empty($_GET['sub_category'])) {
         $items = $pdo->query("SELECT id, name, image, color FROM items WHERE category_id IS NULL ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
+    } elseif(!empty($_GET['category']) && empty($_GET['sub_category'])) {
+        $items = $pdo->query("SELECT id, name, image, color FROM items WHERE category_id = {$_GET['category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
+    } elseif(!empty($_GET['category']) && !empty($_GET['sub_category'])) {
+        $items = $pdo->query("SELECT id, name, image, color FROM items WHERE category_id = {$_GET['sub_category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
         $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -46,7 +52,7 @@ try {
     <link rel="stylesheet" href="./src/css/style.css">
 </head>
 
-<body class="flex">
+<body class="flex dark">
     <div class="overlay"></div>
     <main class="ca">
         <header>
@@ -165,7 +171,7 @@ try {
                         ccenter.classList.add('active');
                     } else {
                         // Charger l'item via AJAX si nécessaire
-                        window.location.href = `?item=${itemId}`;
+                        window.location.href = `?<?php if (isset($_GET['category'])) echo "category={$_GET['category']}&"; if (isset($_GET['sub_category'])) echo "sub_category={$_GET['sub_category']}&"; ?>item=${itemId}`;
                     }
 
                     // Activer le panier si premier clic

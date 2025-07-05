@@ -9,7 +9,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--color-background);
-    color: var(--gray-a12);
+    color: var(--gray-1);
 }
 
 .ccenter {
@@ -35,8 +35,8 @@ body {
             padding: 10px;
             border: 10px;
 
-            background-color: var(--blue-5);
-            border: 1px solid var(--blue-10);
+            // background-color: var(--blue-5);
+            // border: 1px solid var(--blue-10);
 
             border-radius: 10px;
 
@@ -54,7 +54,7 @@ body {
                 font-size: 12px;
                 font-weight: bold;
                 text-align: center;
-                color: var(--gray-a10);
+                color: var(--gray-indicator);
             }
 
             form {

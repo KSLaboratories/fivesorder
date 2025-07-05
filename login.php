@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="src/css/login.css">
 </head>
 
-<body>
+<body class="dark">
 
     <div class="ccenter">
         <h1>Sélectionner un compte</h1>
