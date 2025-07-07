@@ -542,6 +542,12 @@ main.sa {
   flex-direction: column;
   gap: 10px;
 }
+main.sa h1,
+main.sa h2,
+main.sa h3,
+main.sa h4 {
+  color: var(--gray-1);
+}
 main.sa .navigation {
   display: flex;
   flex-wrap: wrap;
@@ -576,6 +582,7 @@ main.sa form button {
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
+  color: var(--blue-contrast);
 }
 main.sa form button:hover {
   background-color: var(--blue-10);
@@ -596,9 +603,10 @@ main.sa h2 {
 }
 main.sa p.helpMessage {
   font-size: 16px;
-  background-color: var(--blue-5);
+  background-color: var(--blue-a11);
   padding: 10px;
   border: 1px solid var(--blue-10);
+  color: var(--gray-1) !important;
 }
 
 @media screen and (max-width: 1295px) {

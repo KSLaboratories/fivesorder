@@ -5,6 +5,7 @@ session_start();
 // ! check if session empty
 if($_SESSION['acc_pss'] == ''){
     header('Location: /login');
+    die;
 }
 
 require_once __DIR__ . '/../vendor/autoload.php';

@@ -4,8 +4,8 @@
 RewriteEngine On
 
 RewriteRule ^login$ login.php
-RewriteRule ^super_admin$ sa.php
-RewriteRule ^caisse$ ca.php
+RewriteRule ^super_admin$ super_admin.php
+RewriteRule ^caisse$ caisse.php
 
 <Files "LICENSE">  
   Require all denied

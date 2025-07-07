@@ -20,6 +20,13 @@ main.sa {
     flex-direction: column;
     gap: 10px;
 
+    h1,
+    h2,
+    h3,
+    h4 {
+        color: var(--gray-1);
+    }
+
     .navigation {
         display: flex;
         // flex can return if no space
@@ -59,6 +66,7 @@ main.sa {
             padding: 10px;
             border-radius: 10px;
             cursor: pointer;
+            color: var(--blue-contrast);
 
             &:hover {
                 background-color: var(--blue-10);
@@ -85,9 +93,10 @@ main.sa {
 
     p.helpMessage {
         font-size: 16px;
-        background-color: var(--blue-5);
+        background-color: var(--blue-a11);
         padding: 10px;
         border: 1px solid var(--blue-10);
+        color: var(--gray-1) !important;
     }
 }
 
@@ -340,7 +349,7 @@ aside.ca {
                     gap: 10px;
                     grid-template-columns: 1fr 1fr 1fr;
 
-                    label{
+                    label {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
@@ -355,18 +364,18 @@ aside.ca {
                         border-radius: 10px;
                         background-color: var(--gray-6);
 
-                        .priceAdd{
+                        .priceAdd {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
 
-                            input{
+                            input {
                                 width: 40px;
                                 background: none;
                                 border: none;
                             }
 
-                            .additional-price{
+                            .additional-price {
                                 flex: 1;
                                 text-align: right;
                             }

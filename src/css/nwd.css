@@ -533,7 +533,6 @@
 body {
   font-family: "Poppins", sans-serif;
   background-color: var(--color-background);
-  color: var(--gray-1);
   position: fixed;
   top: 0;
   left: 0;
@@ -549,9 +548,13 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
   overflow: hidden;
   overflow-y: auto;
   height: auto;
+}
+main.no_aside {
+  padding-right: 20px;
 }
 
 aside {
@@ -559,6 +562,92 @@ aside {
   height: 100%;
   background-color: var(--blue-12);
   border-radius: 20px 0 0 20px;
+  z-index: 999;
+  padding: 10px;
+  transition: 0.3s ease-in-out;
+}
+aside.commandsActive {
+  transform: translateX(0) !important;
+}
+aside form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+aside form .list {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+}
+aside form .list .item {
+  max-height: 200px;
+  background-color: var(--color-background);
+  padding: 6px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+aside form .list .item .img {
+  width: 90px;
+  height: 60px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+aside form .list .item .img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+aside form .list .item .info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+}
+aside form .list .item .info h3 {
+  font-size: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  color: var(--blue-10);
+  font-weight: bolder;
+}
+aside form .list .item .info p.price {
+  font-weight: bolder;
+}
+aside form .send {
+  flex-shrink: 0;
+}
+aside form .send button {
+  width: 100%;
+  background-color: var(--blue-10);
+  border: none;
+  font-size: 15px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  color: var(--blue-contrast);
+  font-weight: bolder;
+}
+
+body > .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: none;
+}
+body > .overlay.phoneActive {
+  display: block;
 }
 
 nav.navigation {
@@ -571,6 +660,11 @@ nav.navigation {
   padding: 20px 0;
   text-align: center;
   border-radius: 0 20px 20px 0;
+  transition: 0.3s ease-in-out;
+  z-index: 9999;
+}
+nav.navigation.phoneActive {
+  transform: translateX(0);
 }
 nav.navigation .logo a svg {
   color: var(--blue-10);
@@ -601,7 +695,46 @@ nav.navigation .navBtnAct a.active {
   background-color: var(--black-12);
 }
 
+.search {
+  display: flex;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 997;
+}
+.search > button {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--blue-10);
+  font-size: 16px;
+  background-color: var(--blue-12);
+  padding: 4px 12px;
+  border-radius: 0 0 10px 10px;
+  transform: translateY(0);
+  transition: 0.3s ease-in-out;
+}
+@media screen and (max-width: 1200px) {
+  .search > button#buttonNavigation {
+    display: block;
+  }
+}
+@media screen and (max-width: 800px) {
+  .search > button#buttonCommands {
+    display: block;
+  }
+}
+.search > button.commandsActive {
+  transform: translateY(-100%);
+}
+.search > button.phoneActive {
+  transform: translateY(-100%);
+}
+
 .search form {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  flex: 1;
   display: flex;
   gap: 10px;
   border-radius: 0 0 20px 20px;
@@ -843,6 +976,142 @@ header nav.small a button {
   height: 20px;
 }
 
+.ccenter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-65%, -50%);
+  padding: 10px;
+  border: 3px solid var(--blue-10);
+  border-radius: 20px;
+  background-color: var(--blue-12);
+  width: 800px;
+  height: 600px;
+  z-index: 998;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ccenter .header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ccenter .header .img {
+  width: 90px;
+  height: 70px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ccenter .header .img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.ccenter .header .info p.name {
+  font-weight: bolder;
+  color: var(--blue-10);
+  font-size: 20px;
+}
+.ccenter .header .info p.desc {
+  font-size: 12px;
+  color: var(--gray-indicator);
+}
+.ccenter .additionnal {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 100%;
+  gap: 10px;
+}
+.ccenter .additionnal .box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ccenter .additionnal .box > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ccenter .additionnal .box > div p.name {
+  font-weight: bolder;
+  color: var(--blue-10);
+  font-size: 18px;
+}
+.ccenter .additionnal .box > div p.price {
+  font-weight: bolder;
+  color: var(--gray-indicator);
+  font-size: 16px;
+}
+.ccenter .additionnal .box > div input[type=number] {
+  background: none;
+  border: none;
+  font-size: 15px;
+  padding: 5px;
+  width: 50px;
+  text-align: left;
+  font-size: 20px;
+}
+.ccenter .additionnal .box > div button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--blue-contrast);
+  font-size: 16px;
+  background-color: var(--blue-10);
+  padding: 3px;
+  border-radius: 6px;
+}
+.ccenter .actions {
+  display: flex;
+  gap: 10px;
+}
+.ccenter .actions button {
+  flex-shrink: 0;
+}
+.ccenter .actions button.dismiss {
+  background-color: var(--red-10);
+  border: none;
+  font-size: 15px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  color: var(--red-contrast);
+  font-weight: bolder;
+}
+.ccenter .actions button.dismiss:hover {
+  opacity: 0.9;
+}
+.ccenter .actions button.send {
+  background-color: var(--green-9);
+  border: none;
+  font-size: 15px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  color: var(--green-contrast);
+  font-weight: bolder;
+}
+.ccenter .actions button.send:hover {
+  opacity: 0.9;
+}
+.ccenter .actions input {
+  flex: 1;
+  background-color: var(--blue-10);
+  border: none;
+  font-size: 15px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  cursor: default;
+  border-radius: 10px;
+  color: var(--blue-contrast);
+  font-weight: bolder;
+}
+
 @media screen and (max-width: 1550px) {
   .pos__area {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -877,6 +1146,20 @@ header nav.small a button {
     height: 100dvh;
     transform: translateX(-100%);
   }
+  .ccenter {
+    transform: translate(-77%, -50%);
+    width: 600px;
+    height: 80dvh;
+  }
+}
+@media screen and (max-width: 950px) {
+  .ccenter {
+    transform: translate(-85%, -50%);
+    width: 400px;
+  }
+  .ccenter .additionnal {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 @media screen and (max-width: 900px) {
   .pos__area {
@@ -902,6 +1185,24 @@ header nav.small a button {
   }
   .pos__area .item .img {
     height: 20vh;
+  }
+  .ccenter {
+    transform: translate(-50%, -50%);
+    width: 90vw;
+  }
+  .ccenter .actions input {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 524px) {
+  .search form .group svg {
+    display: none;
+  }
+  .search form button {
+    display: none;
+  }
+  .search form .group input {
+    width: 100%;
   }
 }
 @media screen and (max-width: 450px) {

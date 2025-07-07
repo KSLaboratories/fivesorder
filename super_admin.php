@@ -27,21 +27,94 @@ try {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FO | SA</title>
+    <link rel="stylesheet" href="./src/css/nwd.css">
     <link rel="stylesheet" href="./src/css/style.css">
 
-    <link rel="stylesheet" href="./node_modules/notyf/notyf.min.css">
-    <script src="./node_modules/notyf/notyf.min.js"></script>
+    <script src="node_modules/hyperscript.org/dist/_hyperscript.min.js"></script>
+
+    <script src="node_modules/notyf/notyf.min.js"></script>
+    <link rel="stylesheet" href="node_modules/notyf/notyf.min.css">
 </head>
 
-<body>
+<body class="dark">
+    <?php require_once __DIR__ . '/inc/nav.php' ?>
+    <main class="sa no_aside">
 
-    <main class="sa">
+        <div class="search">
+            <button id="buttonNavigation"
+                _="on click toggle .phoneActive on .navigation then toggle .phoneActive on .overlay then toggle .phoneActive on me">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-menu-icon lucide-menu">
+                    <path d="M4 12h16" />
+                    <path d="M4 18h16" />
+                    <path d="M4 6h16" />
+                </svg>
+            </button>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <h1>Page administrateur</h1>
 
         <div class="navigation">
@@ -53,6 +126,11 @@ try {
 
         <!-- category -->
         <?php if ($_GET['filter'] == 'category' || $_GET['filter'] == '') { ?>
+
+            <div class="pos__title sec__title--center">
+                <p>Catégories</p>
+            </div>
+
             <form action="action/sa_addcategory.php" method="post">
                 <h2>Ajouter une catégorie</h2>
                 <p class="helpMessage">
@@ -77,6 +155,7 @@ try {
                     <option value="black">Noir</option>
                     <option value="purple">Violet</option>
                 </select>
+
                 <button type="submit">Ajouter</button>
             </form>
 
@@ -107,6 +186,11 @@ try {
         <?php } ?>
 
         <?php if ($_GET['filter'] == 'items' || $_GET['filter'] == '') { ?>
+
+            <div class="pos__title sec__title--center">
+                <p>Items</p>
+            </div>
+
             <!-- Modification dans le formulaire -->
             <form action="action/sa_add_item.php" method="post" enctype="multipart/form-data">
                 <h2>Ajouter un item</h2>
@@ -210,6 +294,10 @@ try {
         <?php } ?>
 
         <?php if ($_GET['filter'] == 'filter' || $_GET['filter'] == '') { ?>
+            <div class="pos__title sec__title--center">
+                <p>Filters</p>
+            </div>
+
             <form action="action/sa_add_filter.php" method="post">
                 <h2>Ajouter un filtre</h2>
                 <input type="text" name="label" placeholder="Nom du filtre" required>
@@ -259,6 +347,19 @@ try {
                 });
             </script>
         <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </main>
 
