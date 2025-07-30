@@ -157,8 +157,6 @@ foreach ($currentCommand as $item) {
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Oui, supprimer !',
             cancelButtonText: 'Annuler',
-            background: 'var(--bg-primary)',
-            color: 'var(--text-primary)'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = `action/ca_delete_item.php?iuid=${itemUid}`;
@@ -178,8 +176,6 @@ foreach ($currentCommand as $item) {
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Oui, tout vider !',
             cancelButtonText: 'Annuler',
-            background: 'var(--bg-primary)',
-            color: 'var(--text-primary)'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = 'action/ca_clear_command.php';
@@ -199,8 +195,6 @@ foreach ($currentCommand as $item) {
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'Oui, valider !',
             cancelButtonText: 'Annuler',
-            background: 'var(--bg-primary)',
-            color: 'var(--text-primary)',
             customClass: {
                 popup: 'swal-wide'
             }
