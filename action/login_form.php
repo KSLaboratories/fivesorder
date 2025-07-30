@@ -44,22 +44,3 @@ if(password_verify($password, $passwordFromENV)) {
     echo "Vous n'avez pas le droit de vous connecter sur ce site. (Err:3)";
 }
 ?>
-
-<pre>
-    <?= var_dump($_ENV); ?>
-</pre>
-<hr>
-<pre>
-    <?= var_dump($_POST); ?>
-</pre>
-<hr>
-<pre>
-    <?= var_dump($_SESSION); ?>
-</pre>
-<hr>
-<ul>
-    <li><?= $account_type; ?></li>
-    <li><?= $password; ?></li>
-    <li><?= $passwordFromENV; ?></li>
-    <li><?php echo password_verify($password, $passwordFromENV); ?></li>
-</ul>

@@ -579,6 +579,8 @@ aside form .list {
   flex: 1;
   display: flex;
   flex-direction: column-reverse;
+  gap: 10px;
+  overflow-y: auto;
 }
 aside form .list .item {
   max-height: 200px;
@@ -592,6 +594,21 @@ aside form .list .item .img {
   width: 90px;
   height: 60px;
   border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+aside form .list .item .img p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  text-align: center;
+  font-weight: bolder;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
 }
 aside form .list .item .img img {
@@ -619,6 +636,52 @@ aside form .list .item .info h3 {
 }
 aside form .list .item .info p.price {
   font-weight: bolder;
+}
+aside form .list .item .btnActions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+aside form .list .item .btnActions a {
+  flex: 1;
+  padding: 3px;
+  border-radius: 3px;
+  background-color: var(--blue-10);
+  color: var(--blue-contrast);
+  text-align: center;
+  font-weight: bolder;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+aside form .list .item .btnActions a svg {
+  width: 20px;
+  height: 20px;
+}
+aside form .list .item .btnActions a:hover {
+  opacity: 0.8;
+}
+aside form .list .item .btnActions a.delete {
+  background-color: var(--red-10);
+  color: var(--red-contrast);
+}
+aside form .detail {
+  text-align: center;
+  margin: 10px 0;
+}
+aside form .detail a {
+  text-align: none;
+  text-decoration: none;
+  color: var(--blue-10);
+  font-weight: bolder;
+  background-color: var(--color-background);
+  border: 2px solid var(--blue-10);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+aside form .detail a:hover {
+  opacity: 0.8;
 }
 aside form .send {
   flex-shrink: 0;
@@ -1223,6 +1286,184 @@ header nav.small a button {
     height: 20vh;
   }
 }
+.caisse_details {
+  margin: 0 auto;
+  width: 900px;
+  overflow-y: auto;
+}
+@media screen and (max-width: 900px) {
+  .caisse_details {
+    width: 99vw;
+  }
+}
+.caisse_details .item {
+  width: 100%;
+}
+.caisse_details .caisse_details {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.caisse_details header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.caisse_details .back-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: inherit;
+  text-decoration: none;
+}
+.caisse_details .command-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.caisse_details .command-item {
+  background: var(--blue-12);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.caisse_details .item-header {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.caisse_details .item-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caisse_details .item-image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.caisse_details .item-info {
+  flex: 1;
+}
+.caisse_details .item-info h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.caisse_details .item-info .price {
+  margin: 5px 0 0;
+  font-weight: bold;
+  color: var(--blue-10);
+}
+.caisse_details .item-actions {
+  display: flex;
+  gap: 10px;
+}
+.caisse_details .action-btn {
+  color: inherit;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  background-color: var(--blue-10);
+  color: var(--blue-contrast);
+}
+.caisse_details .action-btn:hover {
+  opacity: 0.8;
+}
+.caisse_details .action-btn.delete {
+  background-color: var(--red-10);
+  color: var(--red-contrast);
+}
+.caisse_details .action-btn.delete:hover {
+  opacity: 0.8;
+}
+.caisse_details .item-additionnals {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--blue-1);
+}
+.caisse_details .item-additionnals h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+.caisse_details .item-additionnals ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.caisse_details .item-additionnals li {
+  display: flex;
+  justify-content: space-between;
+}
+.caisse_details .add-name {
+  flex: 1;
+}
+.caisse_details .add-quantity {
+  margin: 0 10px;
+}
+.caisse_details .command-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid var(--blue-10);
+}
+.caisse_details .command-total h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+.caisse_details .total-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--blue-10);
+}
+.caisse_details .command-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 15px;
+}
+.caisse_details .command-actions .btn {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.caisse_details .clear-btn {
+  background: var(--red-10);
+  color: white;
+}
+.caisse_details .clear-btn:hover {
+  opacity: 0.8;
+}
+.caisse_details .validate-btn {
+  background: var(--blue-10);
+  color: white;
+}
+.caisse_details .validate-btn:hover {
+  opacity: 0.8;
+}
+.caisse_details .empty-message {
+  text-align: center;
+  padding: 50px 0;
+  color: var(--text-muted);
+}
+
+html body.swal2-height-auto {
+  height: 100dvh !important;
+}
+
 .cbtn__bck__red {
   background-color: var(--red-10) !important;
   color: var(--red-contrast) !important;

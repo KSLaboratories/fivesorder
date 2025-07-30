@@ -51,6 +51,9 @@ try {
     <title>FO | CA</title>
     <link rel="stylesheet" href="./src/css/nwd.css">
     <script src="node_modules/hyperscript.org/dist/_hyperscript.min.js"></script>
+
+    <!-- sweetalert2 -->
+    <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="dark">
@@ -327,28 +330,125 @@ try {
             </div>
         </div>
     </main>
+
     <aside class="command">
         <form action="action/ca_add_command.php" method="post">
             <div class="list">
-                <div class="item">
-                    <div class="img">
-                        <img src="./uploads/item_6866781583d26.JPG" alt="">
-                    </div>
-                    <div class="info">
-                        <h3 class="title">
-                            Espresso
-                        </h3>
-                        <p class="price">
-                            2.5<span>€</span>
-                        </p>
-                    </div>
+                <?php
+                if (!empty($_COOKIE['commandPreparation'])) {
+                    $commandItems = json_decode($_COOKIE['commandPreparation'], true);
+
+                    try {
+                        $pdo = new PDO(
+                            "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset=utf8mb4",
+                            $_ENV['DB_USER'],
+                            $_ENV['DB_PASS'],
+                            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+                        );
+
+                        foreach ($commandItems as $item) {
+                            // Récupérer les infos de l'item depuis la DB
+                            $stmt = $pdo->prepare("SELECT * FROM items WHERE id = ?");
+                            $stmt->execute([$item['item_id']]);
+                            $itemInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                            if ($itemInfo) {
+                ?>
+                                <div class="item">
+                                    <?php if (!empty($itemInfo['image'])) { ?>
+                                        <div class="img">
+                                            <img src="<?= htmlspecialchars($itemInfo['image']) ?>" alt="">
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class="img cbtn__bck__<?= htmlspecialchars($itemInfo['color']) ?>">
+                                            <p><?= htmlspecialchars($itemInfo['name']) ?></p>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="info">
+                                        <h3 class="title">
+                                            <?= htmlspecialchars($itemInfo['name']) ?>
+                                        </h3>
+                                        <p class="price">
+                                            <?= number_format($item['price'], 2) ?><span>€</span>
+                                        </p>
+                                    </div>
+                                    <div class="btnActions">
+                                        <a href="action/ca_copy_item.php?iuid=<?= htmlspecialchars($item['uid']) ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-plus-icon lucide-copy-plus">
+                                                <line x1="15" x2="15" y1="12" y2="18" />
+                                                <line x1="12" x2="18" y1="15" y2="15" />
+                                                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                            </svg>
+                                        </a>
+                                        <a href="action/ca_delete_item.php?iuid=<?= htmlspecialchars($item['uid']) ?>" class="delete">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-minus-icon lucide-badge-minus">
+                                                <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                                                <line x1="8" x2="16" y1="12" y2="12" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                <?php
+                            }
+                        }
+                    } catch (PDOException $e) {
+                        echo '<p>Erreur de connexion à la base de données</p>';
+                    }
+                } else {
+                    echo '<p>Aucun item dans la commande</p>';
+                }
+                ?>
+            </div>
+            <?php if (!empty($_COOKIE['commandPreparation'])) { ?>
+                <div class="detail">
+                    <a href="caisse_details">
+                        Détails de la commande
+                    </a>
                 </div>
-            </div>
-            <div class="send">
-                <button type="submit">Valider et envoyer</button>
-            </div>
+                <div class="send">
+                    <button type="submit" id="submitCommand">Valider et envoyer</button>
+                </div>
+            <?php } ?>
         </form>
     </aside>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitButton = document.getElementById('submitCommand');
+
+            if (submitButton) {
+                submitButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Confirmer la commande',
+                        html: `<p>Êtes-vous sûr de vouloir valider cette commande ?</p>`,
+                        icon: 'question',
+                        showCancelButton: true,
+                        showDenyButton: true, // Ajout du troisième bouton
+                        confirmButtonColor: 'var(--blue-10)',
+                        cancelButtonColor: 'var(--red-10)',
+                        denyButtonColor: 'var(--gray-10)', // Couleur pour le nouveau bouton
+                        confirmButtonText: 'Oui, valider !',
+                        cancelButtonText: 'Annuler',
+                        denyButtonText: 'Voir détails', // Texte du nouveau bouton
+                        customClass: {
+                            popup: 'swal-wide'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Soumettre le formulaire si l'utilisateur confirme
+                            document.querySelector('form').submit();
+                        } else if (result.isDenied) {
+                            // Redirection vers la page de détails si "Voir détails" est cliqué
+                            window.location.href = '/caisse_details';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 
 </body>
 
