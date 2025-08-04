@@ -7,6 +7,7 @@ RewriteRule ^login$ login.php
 RewriteRule ^super_admin$ super_admin.php
 RewriteRule ^caisse$ caisse.php
 RewriteRule ^caisse_details$ caisse_details.php
+RewriteRule ^cuisine$ cuisine.php
 
 <Files "LICENSE">  
   Require all denied

@@ -332,7 +332,7 @@ try {
     </main>
 
     <aside class="command">
-        <form action="action/ca_add_command.php" method="post">
+        <form action="action/ca_validate_command.php" method="post">
             <div class="list">
                 <?php
                 if (!empty($_COOKIE['commandPreparation'])) {
@@ -426,22 +426,21 @@ try {
                         html: `<p>Êtes-vous sûr de vouloir valider cette commande ?</p>`,
                         icon: 'question',
                         showCancelButton: true,
-                        showDenyButton: true, // Ajout du troisième bouton
+                        showDenyButton: true,
                         confirmButtonColor: 'var(--blue-10)',
                         cancelButtonColor: 'var(--red-10)',
-                        denyButtonColor: 'var(--gray-10)', // Couleur pour le nouveau bouton
+                        denyButtonColor: 'var(--gray-10)',
                         confirmButtonText: 'Oui, valider !',
                         cancelButtonText: 'Annuler',
-                        denyButtonText: 'Voir détails', // Texte du nouveau bouton
+                        denyButtonText: 'Voir détails',
                         customClass: {
                             popup: 'swal-wide'
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Soumettre le formulaire si l'utilisateur confirme
-                            document.querySelector('form').submit();
+                            // Correction ici : window au lieu de windows
+                            window.location.href = 'action/ca_validate_command.php';
                         } else if (result.isDenied) {
-                            // Redirection vers la page de détails si "Voir détails" est cliqué
                             window.location.href = '/caisse_details';
                         }
                     });
@@ -449,6 +448,28 @@ try {
             }
         });
     </script>
+
+    <?php if ($_GET['msg'] === "commandeEnvoyeeOk") { ?>
+        <!-- command OK -->
+
+        <script>
+            Swal.fire({
+                title: 'Commande envoyé',
+                html: `<p>La commande a bien été envoyé</p> <p>Commande : <b><?= $_GET['id']; ?></b></p>`,
+                icon: 'success',
+                showCancelButton: false,
+                showDenyButton: false, // Ajout du troisième bouton
+                confirmButtonColor: 'var(--blue-10)',
+                cancelButtonColor: 'var(--red-10)',
+                denyButtonColor: 'var(--gray-10)', // Couleur pour le nouveau bouton
+                confirmButtonText: 'd\'accord',
+                customClass: {
+                    popup: 'swal-wide'
+                }
+            })
+        </script>
+
+    <?php } ?>
 
 </body>
 
