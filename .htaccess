@@ -8,6 +8,7 @@ RewriteRule ^super_admin$ super_admin.php
 RewriteRule ^caisse$ caisse.php
 RewriteRule ^caisse_details$ caisse_details.php
 RewriteRule ^cuisine$ cuisine.php
+RewriteRule ^suivis$ suivis.php
 
 <Files "LICENSE">  
   Require all denied
