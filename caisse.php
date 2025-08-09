@@ -22,13 +22,13 @@ try {
 
     // ? items
     if (empty($_GET['category']) && empty($_GET['sub_category'])) {
-        $items = $pdo->query("SELECT id, name, image, color FROM items WHERE category_id IS NULL ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $items = $pdo->query("SELECT id, name, image, color, filter_id FROM items WHERE category_id IS NULL ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
         $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
     } elseif (!empty($_GET['category']) && empty($_GET['sub_category'])) {
-        $items = $pdo->query("SELECT id, name, image, color FROM items WHERE category_id = {$_GET['category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $items = $pdo->query("SELECT id, name, image, color, filter_id FROM items WHERE category_id = {$_GET['category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
         $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
     } elseif (!empty($_GET['category']) && !empty($_GET['sub_category'])) {
-        $items = $pdo->query("SELECT id, name, image, color FROM items WHERE category_id = {$_GET['sub_category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $items = $pdo->query("SELECT id, name, image, color, filter_id FROM items WHERE category_id = {$_GET['sub_category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
         $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -39,6 +39,21 @@ try {
     }
 } catch (PDOException $e) {
     die('Erreur DB : ' . $e->getMessage());
+}
+
+// Organiser les items par filtre
+$itemsByFilter = [];
+$itemsWithoutFilter = [];
+
+foreach ($items as $item) {
+    if ($item['filter_id']) {
+        if (!isset($itemsByFilter[$item['filter_id']])) {
+            $itemsByFilter[$item['filter_id']] = [];
+        }
+        $itemsByFilter[$item['filter_id']][] = $item;
+    } else {
+        $itemsWithoutFilter[] = $item;
+    }
 }
 
 ?>
@@ -270,65 +285,123 @@ try {
             <?php } ?>
         </header>
 
-        <div class="pos">
-            <div class="pos__title sec__title--left">
-                <p>Espresso</p>
+        <!-- Afficher d'abord les items sans filtre -->
+        <?php if (!empty($itemsWithoutFilter)) { ?>
+            <div class="pos">
+                <div class="pos__title sec__title--left">
+                    <p>Autres</p>
+                </div>
+
+                <div class="pos__area">
+                    <?php foreach ($itemsWithoutFilter as $item) { ?>
+                        <a href="?<?php
+                                    $params = [];
+
+                                    if (!empty($_GET['category'])) {
+                                        $params[] = 'category=' . urlencode($_GET['category']);
+                                    }
+
+                                    if (!empty($_GET['sub_category'])) {
+                                        $params[] = 'sub_category=' . urlencode($_GET['sub_category']);
+                                    }
+
+                                    $params[] = 'item=' . urlencode($item['id']);
+
+                                    echo implode('&', $params);
+                                    ?>">
+                            <div class="item">
+                                <?php if (!empty($item['image'])) { ?>
+                                    <div class="img">
+                                        <img src="<?= $item['image'] ?>" alt="">
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="img cbtn__bck__<?= $item['color'] ?>">
+                                        <p><?= htmlspecialchars($item['name']) ?></p>
+                                    </div>
+                                <?php } ?>
+                                <p class="title">
+                                    <?= htmlspecialchars($item['name']) ?>
+                                </p>
+                                <button class="cbtn__bck__blue">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-package-plus-icon lucide-package-plus">
+                                        <path d="M16 16h6" />
+                                        <path d="M19 13v6" />
+                                        <path
+                                            d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14" />
+                                        <path d="m7.5 4.27 9 5.15" />
+                                        <polyline points="3.29 7 12 12 20.71 7" />
+                                        <line x1="12" x2="12" y1="22" y2="12" />
+                                    </svg>
+                                    Ajouter
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
+                </div>
             </div>
+        <?php } ?>
 
-            <div class="pos__area">
+        <!-- Afficher les items groupés par filtre -->
+        <?php foreach ($filters as $filter) { 
+            if (isset($itemsByFilter[$filter['id']])) { ?>
+                <div class="pos">
+                    <div class="pos__title sec__title--left">
+                        <p><?= htmlspecialchars($filter['label']) ?></p>
+                    </div>
 
+                    <div class="pos__area">
+                        <?php foreach ($itemsByFilter[$filter['id']] as $item) { ?>
+                            <a href="?<?php
+                                        $params = [];
 
+                                        if (!empty($_GET['category'])) {
+                                            $params[] = 'category=' . urlencode($_GET['category']);
+                                        }
 
-                <?php foreach ($items as $item) { ?>
-                    <a href="?<?php
-                                $params = [];
+                                        if (!empty($_GET['sub_category'])) {
+                                            $params[] = 'sub_category=' . urlencode($_GET['sub_category']);
+                                        }
 
-                                if (!empty($_GET['category'])) {
-                                    $params[] = 'category=' . urlencode($_GET['category']);
-                                }
+                                        $params[] = 'item=' . urlencode($item['id']);
 
-                                if (!empty($_GET['sub_category'])) {
-                                    $params[] = 'sub_category=' . urlencode($_GET['sub_category']);
-                                }
-
-                                $params[] = 'item=' . urlencode($item['id']);
-
-                                echo implode('&', $params);
-                                ?>">
-                        <div class="item">
-                            <?php if (!empty($item['image'])) { ?>
-                                <div class="img">
-                                    <img src="<?= $item['image'] ?>" alt="">
+                                        echo implode('&', $params);
+                                        ?>">
+                                <div class="item">
+                                    <?php if (!empty($item['image'])) { ?>
+                                        <div class="img">
+                                            <img src="<?= $item['image'] ?>" alt="">
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class="img cbtn__bck__<?= $item['color'] ?>">
+                                            <p><?= htmlspecialchars($item['name']) ?></p>
+                                        </div>
+                                    <?php } ?>
+                                    <p class="title">
+                                        <?= htmlspecialchars($item['name']) ?>
+                                    </p>
+                                    <button class="cbtn__bck__blue">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="lucide lucide-package-plus-icon lucide-package-plus">
+                                            <path d="M16 16h6" />
+                                            <path d="M19 13v6" />
+                                            <path
+                                                d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14" />
+                                            <path d="m7.5 4.27 9 5.15" />
+                                            <polyline points="3.29 7 12 12 20.71 7" />
+                                            <line x1="12" x2="12" y1="22" y2="12" />
+                                        </svg>
+                                        Ajouter
+                                    </button>
                                 </div>
-                            <?php } else { ?>
-                                <div class="img cbtn__bck__<?= $item['color'] ?>">
-                                    <p><?= htmlspecialchars($item['name']) ?></p>
-                                </div>
-                            <?php } ?>
-                            <p class="title">
-                                <?= htmlspecialchars($item['name']) ?>
-                            </p>
-                            <button class="cbtn__bck__blue">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-package-plus-icon lucide-package-plus">
-                                    <path d="M16 16h6" />
-                                    <path d="M19 13v6" />
-                                    <path
-                                        d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14" />
-                                    <path d="m7.5 4.27 9 5.15" />
-                                    <polyline points="3.29 7 12 12 20.71 7" />
-                                    <line x1="12" x2="12" y1="22" y2="12" />
-                                </svg>
-                                Ajouter
-                            </button>
-                        </div>
-                    </a>
-                <?php } ?>
-
-
-            </div>
-        </div>
+                            </a>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } ?>
     </main>
 
     <aside class="command">
