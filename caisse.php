@@ -172,6 +172,22 @@ foreach ($items as $item) {
                     // Initialiser le prix de base
                     const basePrice = parseFloat(document.querySelector('input[name="price"]').value);
 
+                    // =============================
+
+                    let total = basePrice;
+
+                    // Parcourir tous les inputs d'additionnels
+                    document.querySelectorAll('.additionnal input[type="number"]').forEach(input => {
+                        const quantity = parseInt(input.value) || 0;
+                        const price = parseFloat(input.dataset.price) || 0;
+                        total += quantity * price;
+                    });
+
+                    // Mettre à jour le champ prix total
+                    document.querySelector('input[name="price"]').value = total.toFixed(2);
+
+                    // =============================
+
                     // Fonction pour mettre à jour le prix total
                     function updateTotalPrice() {
                         let total = basePrice;
@@ -344,7 +360,7 @@ foreach ($items as $item) {
         <?php } ?>
 
         <!-- Afficher les items groupés par filtre -->
-        <?php foreach ($filters as $filter) { 
+        <?php foreach ($filters as $filter) {
             if (isset($itemsByFilter[$filter['id']])) { ?>
                 <div class="pos">
                     <div class="pos__title sec__title--left">
