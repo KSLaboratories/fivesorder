@@ -40,7 +40,15 @@ foreach ($currentCommand as $item) {
     <!-- SweetAlert2 CSS & JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Votre CSS existant ici */
+        .item-additionnals li.removed {
+            color: var(--red-10);
+        }
+        .item-additionnals li.modified {
+            color: var(--blue-10);
+        }
+        .item-additionnals li.default {
+            color: var(--green-8);
+        }
     </style>
 </head>
 
@@ -117,11 +125,20 @@ foreach ($currentCommand as $item) {
                                 <h3>Suppléments :</h3>
                                 <ul>
                                     <?php foreach ($additionnals as $add): ?>
-                                        <?php if ($item['additional'][$add['id']] > 0): ?>
-                                            <li>
-                                                <span class="add-name"><?= htmlspecialchars($add['label']) ?></span>
-                                                <span class="add-quantity">x<?= $item['additional'][$add['id']] ?></span>
-                                                <span class="add-price"><?= number_format($add['price'] * $item['additional'][$add['id']], 2) ?> €</span>
+                                        <?php 
+                                        $currentQty = (int)($item['additional'][$add['id']] ?? 0);
+                                        $defaultQty = (int)($add['default_quantity'] ?? 0);
+                                        $isRemoved = $currentQty === 0 && $defaultQty !== 0;
+                                        $isDefault = $currentQty === $defaultQty;
+                                        $isModified = !$isRemoved && !$isDefault;
+                                        
+                                        if ($currentQty > 0 || $isRemoved):
+                                            $class = $isRemoved ? 'removed' : ($isModified ? 'modified' : 'default');
+                                        ?>
+                                            <li class="<?= $class ?>">
+                                                <span class="add-name"><?= $isRemoved ? '- ' : '+ ' ?><?= htmlspecialchars($add['label']) ?></span>
+                                                <span class="add-quantity">x<?= $currentQty ?></span>
+                                                <span class="add-price"><?= number_format($add['price'] * $currentQty, 2) ?> €</span>
                                             </li>
                                         <?php endif; ?>
                                     <?php endforeach; ?>

@@ -21,16 +21,30 @@ try {
     }
 
     // ? items
-    if (empty($_GET['category']) && empty($_GET['sub_category'])) {
-        $items = $pdo->query("SELECT id, name, image, color, filter_id FROM items WHERE category_id IS NULL ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-        $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
-    } elseif (!empty($_GET['category']) && empty($_GET['sub_category'])) {
-        $items = $pdo->query("SELECT id, name, image, color, filter_id FROM items WHERE category_id = {$_GET['category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-        $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
-    } elseif (!empty($_GET['category']) && !empty($_GET['sub_category'])) {
-        $items = $pdo->query("SELECT id, name, image, color, filter_id FROM items WHERE category_id = {$_GET['sub_category']} ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-        $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $searchQuery = !empty($_GET['q']) ? $_GET['q'] : '';
+    
+    if (!empty($searchQuery)) {
+        // Si on a une recherche, on cherche dans tous les items indépendamment de la catégorie
+        $stmt = $pdo->prepare("SELECT id, name, image, color, filter_id FROM items WHERE name LIKE :search ORDER BY name ASC");
+        $stmt->bindValue(':search', "%$searchQuery%");
+        $stmt->execute();
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        // Sans recherche, on applique les filtres de catégorie normalement
+        if (empty($_GET['category']) && empty($_GET['sub_category'])) {
+            $stmt = $pdo->prepare("SELECT id, name, image, color, filter_id FROM items WHERE category_id IS NULL ORDER BY name ASC");
+        } elseif (!empty($_GET['category']) && empty($_GET['sub_category'])) {
+            $stmt = $pdo->prepare("SELECT id, name, image, color, filter_id FROM items WHERE category_id = :category ORDER BY name ASC");
+            $stmt->bindValue(':category', $_GET['category']);
+        } elseif (!empty($_GET['category']) && !empty($_GET['sub_category'])) {
+            $stmt = $pdo->prepare("SELECT id, name, image, color, filter_id FROM items WHERE category_id = :sub_category ORDER BY name ASC");
+            $stmt->bindValue(':sub_category', $_GET['sub_category']);
+        }
+        $stmt->execute();
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    $filters = $pdo->query("SELECT id, label FROM filters ORDER BY label ASC")->fetchAll(PDO::FETCH_ASSOC);
 
     // itemShow
     if (!empty($_GET['item'])) {
@@ -258,7 +272,7 @@ foreach ($items as $item) {
                         <circle cx="18.5" cy="15.5" r="2.5" />
                         <path d="M20.27 17.27 22 19" />
                     </svg>
-                    <input type="search" name="q" placeholder="Rechercher un item" id="">
+                                        <input type="search" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Rechercher un item" id="">
                 </div>
                 <button type="submit">Rechercher</button>
             </form>

@@ -78,7 +78,15 @@ $completedItems = $_SESSION['completed_items'] ?? [];
     
     <link rel="stylesheet" href="./src/css/nwd.css">
     <style>
-
+        .item-additionals .additional.removed {
+            color: var(--red-10);
+        }
+        .item-additionals .additional.modified {
+            color: var(--blue-10);
+        }
+        .item-additionals .additional.default {
+            color: var(--green-8);
+        }
     </style>
 </head>
 
@@ -162,15 +170,27 @@ $completedItems = $_SESSION['completed_items'] ?? [];
                                     <?php if (!empty($item['additional'])): ?>
                                         <div class="item-additionals">
                                             <?php foreach ($item['additional'] as $addId => $qty): ?>
-                                                <?php if ($qty > 0): ?>
-                                                    <?php
+                                                <?php
+                                                // Récupérer la quantité par défaut
+                                                $stmt = $pdo->prepare("SELECT default_quantity FROM items_additionnal WHERE id = ?");
+                                                $stmt->execute([$addId]);
+                                                $defaultQty = $stmt->fetchColumn();
+                                                $defaultQty = (int)$defaultQty;  // Conversion en entier
+                                                $qty = (int)$qty;  // Conversion en entier
+                                                $wasModified = $qty !== $defaultQty;
+                                                $isRemoved = $qty === 0 && $defaultQty !== 0;
+                                                $isDefault = $qty === $defaultQty;
+                                                $isModified = !$isRemoved && !$isDefault;
+
+                                                if ($qty > 0 || $isRemoved):
                                                     $addName = $additionalsInfo[$addId] ?? 'Suppl. inconnu';
                                                     $addKey = $itemKey . '_' . $addId;
                                                     ?>
-                                                    <div class="additional <?= isset($completedItems[$addKey]) ? 'completed' : '' ?>"
+                                                    <div class="additional <?= isset($completedItems[$addKey]) ? 'completed' : '' ?> 
+                                                        <?= $isRemoved ? 'removed' : ($isModified ? 'modified' : ($isDefault ? 'default' : '')) ?>"
                                                         data-add-id="<?= $addId ?>"
                                                         onclick="event.stopPropagation(); toggleCompleted('<?= $addKey ?>', this)">
-                                                        + <?= htmlspecialchars($addName) ?> (x<?= $qty ?>)
+                                                        <?= $isRemoved ? '- ' : '+ ' ?><?= htmlspecialchars($addName) ?> (x<?= $qty ?>)
                                                     </div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
