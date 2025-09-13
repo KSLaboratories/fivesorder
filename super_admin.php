@@ -154,6 +154,12 @@ try {
                     <option value="orange">Orange</option>
                     <option value="black">Noir</option>
                     <option value="purple">Violet</option>
+                    <!-- special -->
+                    <option value="caramel">Caramel</option>
+                    <option value="jaunepastel">Jaune pastel</option>
+                    <option value="yellow">Jaune</option>
+                    <option value="blanc">Blanc</option>
+                    <option value="fushia">Fushia</option>
                 </select>
 
                 <button type="submit">Ajouter</button>
@@ -228,6 +234,11 @@ try {
                     <option value="pink">Rose</option>
                     <option value="black">Noir</option>
                     <option value="purple">Violet</option>
+                    <!-- special -->
+                    <option value="caramel">Caramel</option>
+                    <option value="jaunepastel">Jaune pastel</option>
+                    <option value="blanc">Blanc</option>
+                    <option value="fushia">Fushia</option>
                 </select>
 
                 <!-- Additionnels -->

@@ -1,6 +1,9 @@
 <?php
 // cuisine.php
 
+// remove error
+error_reporting(0);
+
 require_once __DIR__ . '/inc/core.php';
 
 try {
@@ -11,8 +14,22 @@ try {
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 
-    // Récupérer les commandes triées (in_progress d'abord, puis pending, et par date)
-    $stmt = $pdo->query("
+    if ($_GET['type'] == "completed") {
+        $stmt = $pdo->query("
+            SELECT o.*, 
+                   CASE 
+                     WHEN o.status = 'in_progress' THEN 0 
+                     WHEN o.status = 'pending' THEN 1 
+                     ELSE 2 
+                   END AS status_order
+            FROM orderlist o
+            WHERE o.status = 'completed' 
+            ORDER BY o.created_at ASC
+        ");
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        // Récupérer les commandes triées (in_progress d'abord, puis pending, et par date)
+        $stmt = $pdo->query("
         SELECT o.*, 
                CASE 
                  WHEN o.status = 'in_progress' THEN 0 
@@ -20,10 +37,11 @@ try {
                  ELSE 2 
                END AS status_order
         FROM orderlist o
-        WHERE o.status IN ('pending', 'in_progress', 'completed') 
+        WHERE o.status IN ('pending', 'in_progress') 
         ORDER BY status_order ASC, o.created_at ASC
     ");
-    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // Précharger les informations des items et suppléments
     $itemIds = [];
@@ -75,15 +93,17 @@ $completedItems = $_SESSION['completed_items'] ?? [];
 
     <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.css">
-    
+
     <link rel="stylesheet" href="./src/css/nwd.css">
     <style>
         .item-additionals .additional.removed {
             color: var(--red-10);
         }
+
         .item-additionals .additional.modified {
             color: var(--blue-10);
         }
+
         .item-additionals .additional.default {
             color: var(--green-8);
         }
@@ -119,15 +139,27 @@ $completedItems = $_SESSION['completed_items'] ?? [];
         <div class="cuisine">
             <div class="header">
                 <h1>Commandes en cuisine</h1>
-                <button class="refresh-btn" onclick="window.location.reload()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                        <path d="M3 3v5h5" />
-                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-                        <path d="M16 16h5v5" />
-                    </svg>
-                    Actualiser
-                </button>
+                <?php if ($_GET['type'] === 'completed') { ?>
+                    <button class="refresh-btn" onclick="window.location.href = '/cuisine'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                            <path d="M3 3v5h5" />
+                            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                            <path d="M16 16h5v5" />
+                        </svg>
+                        Commandes en cours
+                    </button>
+                <?php } else { ?>
+                    <button class="action-btn" onclick="window.location.href = '/cuisine?type=completed'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                            <path d="M3 3v5h5" />
+                            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                            <path d="M16 16h5v5" />
+                        </svg>
+                        Commande prête
+                    </button>
+                <?php } ?>
             </div>
 
             <div class="orders-grid">
@@ -185,7 +217,7 @@ $completedItems = $_SESSION['completed_items'] ?? [];
                                                 if ($qty > 0 || $isRemoved):
                                                     $addName = $additionalsInfo[$addId] ?? 'Suppl. inconnu';
                                                     $addKey = $itemKey . '_' . $addId;
-                                                    ?>
+                                                ?>
                                                     <div class="additional <?= isset($completedItems[$addKey]) ? 'completed' : '' ?> 
                                                         <?= $isRemoved ? 'removed' : ($isModified ? 'modified' : ($isDefault ? 'default' : '')) ?>"
                                                         data-add-id="<?= $addId ?>"

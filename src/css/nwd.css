@@ -1096,7 +1096,6 @@ header nav.small a button {
   color: var(--gray-indicator);
 }
 .ccenter .additionnal {
-  flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   height: 100%;
@@ -1106,11 +1105,17 @@ header nav.small a button {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  border: 1px solid var(--blue-10);
+  padding: 10px;
 }
 .ccenter .additionnal .box > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.ccenter .additionnal .box > div:nth-child(2) {
+  flex-direction: row-reverse;
+  gap: 0;
 }
 .ccenter .additionnal .box > div p.name {
   font-weight: bolder;
@@ -1520,6 +1525,21 @@ header nav.small a button {
 .cuisine .header .refresh-btn:hover {
   background-color: #45a049;
 }
+.cuisine .header .action-btn {
+  background-color: #4c93af;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cuisine .header .action-btn:hover {
+  background-color: #366d83;
+}
 .cuisine .orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -1829,6 +1849,30 @@ body.suivis .charts-grid {
   background-color: var(--purple-10) !important;
   color: var(--purple-contrast) !important;
 }
+.cbtn__bck__caramel {
+  background-color: #9c8865 !important;
+  color: #000 !important;
+}
+.cbtn__bck__jaunepastel {
+  background-color: #ffe5bc !important;
+  color: #000 !important;
+}
+.cbtn__bck__yellow {
+  background-color: #ffcc00 !important;
+  color: #000 !important;
+}
+.cbtn__bck__blanc {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.cbtn__bck__fushia {
+  background-color: #e871a7 !important;
+  color: #000 !important;
+}
+.cbtn__bck__pink {
+  background-color: #FFC0CB !important;
+  color: #000 !important;
+}
 .cbtn__ctr__red {
   border: 2px solid var(--red-10) !important;
 }
@@ -1847,6 +1891,25 @@ body.suivis .charts-grid {
 .cbtn__ctr__purple {
   border: 2px solid var(--purple-10) !important;
 }
+.cbtn__ctr__caramel {
+  border: 2px solid #9c8865 !important;
+}
+.cbtn__ctr__jaunepastel {
+  border: 2px solid #ffe5bc !important;
+}
+.cbtn__ctr__yellow {
+  border: 2px solid #ffcc00 !important;
+  color: #000 !important;
+}
+.cbtn__ctr__blanc {
+  border: 2px solid #fff !important;
+}
+.cbtn__ctr__fushia {
+  border: 2px solid #e871a7 !important;
+}
+.cbtn__ctr__pink {
+  border: 2px solid #FFC0CB !important;
+}
 .cbtn__ctrh__red:hover {
   border: 2px solid var(--red-10) !important;
 }
@@ -1864,4 +1927,23 @@ body.suivis .charts-grid {
 }
 .cbtn__ctrh__purple:hover {
   border: 2px solid var(--purple-10) !important;
+}
+.cbtn__ctrh__caramel:hover {
+  border: 2px solid #9c8865 !important;
+}
+.cbtn__ctrh__jaunepastel:hover {
+  border: 2px solid #ffe5bc !important;
+}
+.cbtn__ctrh__yellow:hover {
+  border: 2px solid #ffcc00 !important;
+  color: #000 !important;
+}
+.cbtn__ctrh__blanc:hover {
+  border: 2px solid #fff !important;
+}
+.cbtn__ctrh__fushia:hover {
+  border: 2px solid #e871a7 !important;
+}
+.cbtn__ctrh__pink:hover {
+  border: 2px solid #FFC0CB !important;
 }/*# sourceMappingURL=nwd.css.map */
